@@ -27,9 +27,9 @@ import com.google.firebase.database.ValueEventListener;
 import java.util.ArrayList;
 import java.util.List;
 
-public class CoursesTabFragment extends Fragment {
+public class DownloadsTabFragment extends Fragment {
 
-    private RecyclerView coursesRecyclerView;
+    private RecyclerView downloadsRecyclerView;
     private ProgressBar loadingProgressBar;
     private TextView errorTextView;
     private TextView emptyTextView;
@@ -41,14 +41,14 @@ public class CoursesTabFragment extends Fragment {
     private DatabaseReference coursesRef;
     
     private String userId;
-    private List<String> enrolledCourseIds = new ArrayList<>();
+    private List<String> downloadedCourseIds = new ArrayList<>();
 
-    public CoursesTabFragment() {
+    public DownloadsTabFragment() {
         // Required empty public constructor
     }
 
-    public static CoursesTabFragment newInstance(String userId) {
-        CoursesTabFragment fragment = new CoursesTabFragment();
+    public static DownloadsTabFragment newInstance(String userId) {
+        DownloadsTabFragment fragment = new DownloadsTabFragment();
         Bundle args = new Bundle();
         args.putString("userId", userId);
         fragment.setArguments(args);
@@ -72,7 +72,7 @@ public class CoursesTabFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_courses_tab, container, false);
+        return inflater.inflate(R.layout.fragment_downloads_tab, container, false);
     }
 
     @Override
@@ -80,7 +80,7 @@ public class CoursesTabFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
 
         // Initialize views
-        coursesRecyclerView = view.findViewById(R.id.coursesRecyclerView);
+        downloadsRecyclerView = view.findViewById(R.id.downloadsRecyclerView);
         loadingProgressBar = view.findViewById(R.id.loadingProgressBar);
         errorTextView = view.findViewById(R.id.errorTextView);
         emptyTextView = view.findViewById(R.id.emptyTextView);
@@ -88,36 +88,36 @@ public class CoursesTabFragment extends Fragment {
         // Set up RecyclerView
         setupRecyclerView();
 
-        // Load enrolled courses
-        loadEnrolledCourses();
+        // Load downloaded courses
+        loadDownloadedCourses();
     }
 
     private void setupRecyclerView() {
-        coursesRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+        downloadsRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         courseAdapter = new CourseAdapter(new ArrayList<>(), new CourseAdapter.OnCourseClickListener() {
             @Override
             public void onCourseClick(Course course) {
                 navigateToCourseDetail(course);
             }
         });
-        coursesRecyclerView.setAdapter(courseAdapter);
+        downloadsRecyclerView.setAdapter(courseAdapter);
     }
 
-    private void loadEnrolledCourses() {
+    private void loadDownloadedCourses() {
         showLoading();
 
-        usersRef.child(userId).child("enrolledCourses").addValueEventListener(new ValueEventListener() {
+        usersRef.child(userId).child("downloadedCourses").addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                enrolledCourseIds.clear();
+                downloadedCourseIds.clear();
                 for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
                     String courseId = snapshot.getValue(String.class);
                     if (courseId != null) {
-                        enrolledCourseIds.add(courseId);
+                        downloadedCourseIds.add(courseId);
                     }
                 }
 
-                if (enrolledCourseIds.isEmpty()) {
+                if (downloadedCourseIds.isEmpty()) {
                     showEmpty();
                 } else {
                     loadCourseDetails();
@@ -126,25 +126,26 @@ public class CoursesTabFragment extends Fragment {
 
             @Override
             public void onCancelled(@NonNull DatabaseError databaseError) {
-                showError("Error loading enrolled courses: " + databaseError.getMessage());
+                showError("Error loading downloaded courses: " + databaseError.getMessage());
             }
         });
     }
 
     private void loadCourseDetails() {
-        final List<Course> myCourses = new ArrayList<>();
+        final List<Course> downloadedCourses = new ArrayList<>();
 
-        for (String courseId : enrolledCourseIds) {
+        for (String courseId : downloadedCourseIds) {
             coursesRef.child(courseId).addListenerForSingleValueEvent(new ValueEventListener() {
                 @Override
                 public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                     Course course = dataSnapshot.getValue(Course.class);
                     if (course != null) {
-                        myCourses.add(course);
+                        course.setDownloaded(true);
+                        downloadedCourses.add(course);
 
                         // Update adapter when all courses are loaded
-                        if (myCourses.size() == enrolledCourseIds.size()) {
-                            updateAdapter(myCourses);
+                        if (downloadedCourses.size() == downloadedCourseIds.size()) {
+                            updateAdapter(downloadedCourses);
                         }
                     }
                 }
@@ -173,12 +174,12 @@ public class CoursesTabFragment extends Fragment {
         loadingProgressBar.setVisibility(View.VISIBLE);
         errorTextView.setVisibility(View.GONE);
         emptyTextView.setVisibility(View.GONE);
-        coursesRecyclerView.setVisibility(View.GONE);
+        downloadsRecyclerView.setVisibility(View.GONE);
     }
 
     private void hideLoading() {
         loadingProgressBar.setVisibility(View.GONE);
-        coursesRecyclerView.setVisibility(View.VISIBLE);
+        downloadsRecyclerView.setVisibility(View.VISIBLE);
     }
 
     private void showError(String errorMessage) {
@@ -186,13 +187,13 @@ public class CoursesTabFragment extends Fragment {
         errorTextView.setVisibility(View.VISIBLE);
         errorTextView.setText(errorMessage);
         emptyTextView.setVisibility(View.GONE);
-        coursesRecyclerView.setVisibility(View.GONE);
+        downloadsRecyclerView.setVisibility(View.GONE);
     }
 
     private void showEmpty() {
         loadingProgressBar.setVisibility(View.GONE);
         errorTextView.setVisibility(View.GONE);
         emptyTextView.setVisibility(View.VISIBLE);
-        coursesRecyclerView.setVisibility(View.GONE);
+        downloadsRecyclerView.setVisibility(View.GONE);
     }
 } 
