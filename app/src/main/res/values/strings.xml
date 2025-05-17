@@ -111,6 +111,8 @@
     <string name="currency">Currency</string>
     <string name="languages">Languages</string>
     <string name="linked_accounts">Linked Accounts</string>
+    <string name="edit_profile">Edit Profile</string>
+    <string name="certificates">Certificates</string>
     
     <!-- General -->
     <string name="sort">Sort</string>
@@ -121,4 +123,9 @@
     <string name="all_categories">All Categories</string>
     <string name="course_image">Course Image</string>
     <string name="author_profile">Author Profile</string>
+    
+    <!-- Notifications -->
+    <string name="notification_image">Notification Image</string>
+    <string name="no_notifications">No notifications yet</string>
+    <string name="error_loading_data">Error loading data</string>
 </resources>

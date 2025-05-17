@@ -10,8 +10,8 @@ import androidx.fragment.app.Fragment;
 import com.example.educatro.fragments.AccountFragment;
 import com.example.educatro.fragments.BookmarksFragment;
 import com.example.educatro.fragments.BrowseFragment;
-import com.example.educatro.fragments.DownloadsFragment;
 import com.example.educatro.fragments.MyCoursesFragment;
+import com.example.educatro.fragments.NotificationsFragment;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.navigation.NavigationBarView;
 
@@ -44,8 +44,8 @@ public class MainActivity extends AppCompatActivity {
                     selectedFragment = BrowseFragment.newInstance(userId);
                 } else if (itemId == R.id.nav_my_courses) {
                     selectedFragment = MyCoursesFragment.newInstance(userId);
-                } else if (itemId == R.id.nav_downloads) {
-                    selectedFragment = DownloadsFragment.newInstance(userId);
+                } else if (itemId == R.id.nav_notifications) {
+                    selectedFragment = NotificationsFragment.newInstance(userId);
                 } else if (itemId == R.id.nav_bookmarks) {
                     selectedFragment = BookmarksFragment.newInstance(userId);
                 } else if (itemId == R.id.nav_account) {
