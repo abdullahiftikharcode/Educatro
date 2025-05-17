@@ -80,6 +80,7 @@
     <string name="first_month_free">Your first month is free. Then</string>
     <string name="per_year">per year.</string>
     <string name="start_your_free_trial">Start Your Free Trial</string>
+    <string name="selected">Selected</string>
     
     <!-- Checkout -->
     <string name="choose_payment_method">Choose your payment method</string>
