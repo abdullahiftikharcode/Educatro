@@ -1,0 +1,49 @@
+{
+  "project_info": {
+    "project_number": "586442288097",
+    "firebase_url": "https://juno-aa7d2-default-rtdb.firebaseio.com",
+    "project_id": "juno-aa7d2",
+    "storage_bucket": "juno-aa7d2.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:586442288097:android:5dfac8ba4c6d825718c0a0",
+        "android_client_info": {
+          "package_name": "com.example.educatro"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBWvNG1XvPkK5UHwOCkDfqpTEiUKaQDFMI"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:586442288097:android:a8a4f24d76ed40ac18c0a0",
+        "android_client_info": {
+          "package_name": "com.example.juno"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBWvNG1XvPkK5UHwOCkDfqpTEiUKaQDFMI"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
