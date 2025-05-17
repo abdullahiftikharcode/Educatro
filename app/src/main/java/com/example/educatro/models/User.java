@@ -9,6 +9,7 @@ public class User {
     private String userId;
     private String name;
     private String email;
+    private String password; // We'll store the password in the database for this implementation
     private List<String> enrolledCourses;
     private List<String> bookmarkedCourses;
     private List<String> downloadedCourses;
@@ -41,12 +42,19 @@ public class User {
         this.finishedCoursesCount = 0;
     }
 
+    // Constructor with password for authentication purposes
+    public User(String userId, String name, String email, String password) {
+        this(userId, name, email);
+        this.password = password;
+    }
+
     // Convert User object to a Map for Firebase
     public Map<String, Object> toMap() {
         HashMap<String, Object> result = new HashMap<>();
         result.put("userId", userId);
         result.put("name", name);
         result.put("email", email);
+        result.put("password", password); // Include password in the database
         result.put("enrolledCourses", enrolledCourses);
         result.put("bookmarkedCourses", bookmarkedCourses);
         result.put("downloadedCourses", downloadedCourses);
@@ -145,5 +153,13 @@ public class User {
 
     public void setFinishedCoursesCount(int finishedCoursesCount) {
         this.finishedCoursesCount = finishedCoursesCount;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
     }
 } 

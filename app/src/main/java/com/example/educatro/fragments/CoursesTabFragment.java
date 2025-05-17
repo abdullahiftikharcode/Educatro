@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
@@ -33,6 +34,7 @@ public class CoursesTabFragment extends Fragment {
     private ProgressBar loadingProgressBar;
     private TextView errorTextView;
     private TextView emptyTextView;
+    private Button exploreBrowseButton;
 
     private CourseAdapter courseAdapter;
     
@@ -84,16 +86,26 @@ public class CoursesTabFragment extends Fragment {
         loadingProgressBar = view.findViewById(R.id.loadingProgressBar);
         errorTextView = view.findViewById(R.id.errorTextView);
         emptyTextView = view.findViewById(R.id.emptyTextView);
+        exploreBrowseButton = view.findViewById(R.id.exploreBrowseButton);
 
         // Set up RecyclerView
         setupRecyclerView();
+
+        // Set up browse button click listener
+        exploreBrowseButton.setOnClickListener(v -> {
+            // Navigate to Browse tab
+            if (getActivity() != null) {
+                // Set the bottom navigation to Browse tab (index 0)
+                ((com.example.educatro.MainActivity) getActivity()).navigateToTab(0);
+            }
+        });
 
         // Load enrolled courses
         loadEnrolledCourses();
     }
 
     private void setupRecyclerView() {
-        coursesRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+        coursesRecyclerView.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false));
         courseAdapter = new CourseAdapter(new ArrayList<>(), new CourseAdapter.OnCourseClickListener() {
             @Override
             public void onCourseClick(Course course) {
@@ -118,7 +130,7 @@ public class CoursesTabFragment extends Fragment {
                 }
 
                 if (enrolledCourseIds.isEmpty()) {
-                    showEmpty();
+                    showEmptyWithDummyCourses();
                 } else {
                     loadCourseDetails();
                 }
@@ -157,6 +169,74 @@ public class CoursesTabFragment extends Fragment {
         }
     }
 
+    private void showEmptyWithDummyCourses() {
+        // Create dummy courses for display
+        List<Course> dummyCourses = createDummyCourses();
+        
+        // Show empty state message and explore button
+        loadingProgressBar.setVisibility(View.GONE);
+        errorTextView.setVisibility(View.GONE);
+        emptyTextView.setVisibility(View.VISIBLE);
+        exploreBrowseButton.setVisibility(View.VISIBLE);
+        coursesRecyclerView.setVisibility(View.VISIBLE);
+        
+        // Update adapter with dummy courses
+        updateAdapter(dummyCourses);
+    }
+    
+    private List<Course> createDummyCourses() {
+        List<Course> dummyCourses = new ArrayList<>();
+        
+        // Dummy Course 1
+        Course course1 = new Course();
+        course1.setCourseId("dummy1");
+        course1.setTitle("UI/UX Design Fundamentals");
+        course1.setCategory("Design");
+        course1.setDescription("Learn the fundamentals of UI/UX design with this comprehensive course.");
+        course1.setImageUrl("https://img-c.udemycdn.com/course/750x422/1565838_e54e_11.jpg");  // Use a placeholder URL
+        course1.setAuthorName("Sarah Johnson");
+        course1.setDuration(120); // 2 hours
+        course1.setLessonsCount(8);
+        course1.setRating(4.7f);
+        course1.setRatingsCount(240);
+        course1.setPrice(49.99);
+        
+        // Dummy Course 2
+        Course course2 = new Course();
+        course2.setCourseId("dummy2");
+        course2.setTitle("Introduction to Web Development");
+        course2.setCategory("Development");
+        course2.setDescription("Get started with web development using HTML, CSS, and JavaScript.");
+        course2.setImageUrl("https://img-c.udemycdn.com/course/750x422/792484_cc98_3.jpg"); // Use a placeholder URL
+        course2.setAuthorName("Michael Brown");
+        course2.setDuration(180); // 3 hours
+        course2.setLessonsCount(12);
+        course2.setRating(4.5f);
+        course2.setRatingsCount(320);
+        course2.setPrice(59.99);
+        
+        // Dummy Course 3
+        Course course3 = new Course();
+        course3.setCourseId("dummy3");
+        course3.setTitle("Digital Marketing Essentials");
+        course3.setCategory("Marketing");
+        course3.setDescription("Master digital marketing strategies to grow your online presence.");
+        course3.setImageUrl("https://img-c.udemycdn.com/course/750x422/903744_8eb2.jpg"); // Use a placeholder URL
+        course3.setAuthorName("Emily Wilson");
+        course3.setDuration(150); // 2.5 hours
+        course3.setLessonsCount(10);
+        course3.setRating(4.8f);
+        course3.setRatingsCount(180);
+        course3.setPrice(39.99);
+        
+        // Add dummy courses to the list
+        dummyCourses.add(course1);
+        dummyCourses.add(course2);
+        dummyCourses.add(course3);
+        
+        return dummyCourses;
+    }
+
     private void updateAdapter(List<Course> courses) {
         courseAdapter.setCourses(courses);
         hideLoading();
@@ -173,6 +253,7 @@ public class CoursesTabFragment extends Fragment {
         loadingProgressBar.setVisibility(View.VISIBLE);
         errorTextView.setVisibility(View.GONE);
         emptyTextView.setVisibility(View.GONE);
+        exploreBrowseButton.setVisibility(View.GONE);
         coursesRecyclerView.setVisibility(View.GONE);
     }
 
@@ -186,13 +267,7 @@ public class CoursesTabFragment extends Fragment {
         errorTextView.setVisibility(View.VISIBLE);
         errorTextView.setText(errorMessage);
         emptyTextView.setVisibility(View.GONE);
-        coursesRecyclerView.setVisibility(View.GONE);
-    }
-
-    private void showEmpty() {
-        loadingProgressBar.setVisibility(View.GONE);
-        errorTextView.setVisibility(View.GONE);
-        emptyTextView.setVisibility(View.VISIBLE);
+        exploreBrowseButton.setVisibility(View.GONE);
         coursesRecyclerView.setVisibility(View.GONE);
     }
 } 

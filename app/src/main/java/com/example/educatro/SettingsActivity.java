@@ -1,6 +1,8 @@
 package com.example.educatro;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ImageButton;
@@ -150,8 +152,11 @@ public class SettingsActivity extends AppCompatActivity {
     }
     
     private void signOut() {
-        // Sign out from Firebase
-        auth.signOut();
+        // Clear login state in SharedPreferences
+        SharedPreferences sharedPreferences = getSharedPreferences("EducatroPrefs", Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.clear();
+        editor.apply();
         
         // Navigate to sign in screen
         Intent intent = new Intent(this, SignInActivity.class);

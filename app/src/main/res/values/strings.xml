@@ -98,6 +98,9 @@
     <string name="in_progress">In Progress</string>
     <string name="completed">Completed</string>
     <string name="latest_courses">Latest Courses</string>
+    <string name="no_courses_yet">You haven\'t enrolled in any courses yet</string>
+    <string name="no_downloads_yet">You haven\'t downloaded any courses yet</string>
+    <string name="explore_courses">Explore Courses</string>
     
     <!-- Settings -->
     <string name="settings">Settings</string>

@@ -10,7 +10,8 @@
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        android:theme="@style/Theme.Educatro"
+        android:theme="@style/Theme.Educatro.NoActionBar"
+        android:enableOnBackInvokedCallback="true"
         tools:targetApi="31">
         
         <activity
@@ -35,11 +36,18 @@
             
         <activity
             android:name=".ForgotPasswordActivity"
-            android:exported="false" />
+            android:exported="false"
+            android:theme="@style/Theme.Educatro.NoActionBar" />
+            
+        <activity
+            android:name=".SettingsActivity"
+            android:exported="false"
+            android:theme="@style/Theme.Educatro.NoActionBar" />
             
         <activity
             android:name=".MainActivity"
-            android:exported="false">
+            android:exported="false"
+            android:theme="@style/Theme.Educatro.NoActionBar">
         </activity>
     </application>
 

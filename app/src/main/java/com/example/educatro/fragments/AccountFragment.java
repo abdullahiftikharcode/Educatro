@@ -1,6 +1,8 @@
 package com.example.educatro.fragments;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -21,7 +23,7 @@ import com.bumptech.glide.Glide;
 import com.example.educatro.R;
 import com.example.educatro.SignInActivity;
 import com.example.educatro.models.User;
-import com.google.firebase.auth.FirebaseAuth;
+
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -44,7 +46,6 @@ public class AccountFragment extends Fragment {
     private ProgressBar loadingProgressBar;
     private TextView errorTextView;
 
-    private FirebaseAuth auth;
     private FirebaseDatabase database;
     private DatabaseReference usersRef;
 
@@ -70,7 +71,6 @@ public class AccountFragment extends Fragment {
         }
 
         // Initialize Firebase
-        auth = FirebaseAuth.getInstance();
         database = FirebaseDatabase.getInstance();
         usersRef = database.getReference("users");
     }
@@ -98,6 +98,10 @@ public class AccountFragment extends Fragment {
         finishedCoursesCountTextView = view.findViewById(R.id.finishedCoursesCountTextView);
         addNewCardLayout = view.findViewById(R.id.addNewCardLayout);
         
+        // Initialize progress bar and error text view
+        loadingProgressBar = view.findViewById(R.id.loadingProgressBar);
+        errorTextView = view.findViewById(R.id.errorTextView);
+        
         // Setup favorite categories buttons
         Button historyButton = view.findViewById(R.id.historyButton);
         Button businessButton = view.findViewById(R.id.businessButton);
@@ -105,6 +109,27 @@ public class AccountFragment extends Fragment {
         Button politicsButton = view.findViewById(R.id.politicsButton);
         Button literatureButton = view.findViewById(R.id.literatureButton);
         Button scienceButton = view.findViewById(R.id.scienceButton);
+        
+        // Setup payment card views
+        View mainCardLayout = view.findViewById(R.id.mainCardLayout);
+        View secondCardLayout = view.findViewById(R.id.secondCardLayout);
+        
+        // Set click listeners for payment cards
+        mainCardLayout.setOnClickListener(v -> {
+            Toast.makeText(getContext(), "Viewing Main Card Details", Toast.LENGTH_SHORT).show();
+        });
+        
+        secondCardLayout.setOnClickListener(v -> {
+            Toast.makeText(getContext(), "Viewing Oscar's Card Details", Toast.LENGTH_SHORT).show();
+        });
+        
+        // Set up category button click listeners
+        historyButton.setOnClickListener(v -> navigateToCategory("History"));
+        businessButton.setOnClickListener(v -> navigateToCategory("Business & Management"));
+        lawButton.setOnClickListener(v -> navigateToCategory("Law"));
+        politicsButton.setOnClickListener(v -> navigateToCategory("Politics & Society"));
+        literatureButton.setOnClickListener(v -> navigateToCategory("Literature"));
+        scienceButton.setOnClickListener(v -> navigateToCategory("Science"));
 
         // Set up click listeners
         setupClickListeners();
@@ -120,8 +145,10 @@ public class AccountFragment extends Fragment {
         });
 
         settingsButton.setOnClickListener(v -> {
-            // In a real app, you would navigate to the settings screen
-            Toast.makeText(getContext(), "Settings", Toast.LENGTH_SHORT).show();
+            // Navigate to settings screen
+            Intent intent = new Intent(getActivity(), com.example.educatro.SettingsActivity.class);
+            intent.putExtra("userId", userId);
+            startActivity(intent);
         });
         
         moreOptionsButton.setOnClickListener(v -> {
@@ -130,7 +157,7 @@ public class AccountFragment extends Fragment {
         });
         
         addNewCardLayout.setOnClickListener(v -> {
-            // In a real app, you would navigate to add payment method screen
+            // For now just show a toast, but in a complete app this would navigate to a payment card screen
             Toast.makeText(getContext(), "Add New Payment Card", Toast.LENGTH_SHORT).show();
         });
     }
@@ -171,13 +198,21 @@ public class AccountFragment extends Fragment {
     }
 
     private void signOut() {
-        auth.signOut();
+        // Clear login state in SharedPreferences
+        if (getContext() != null) {
+            SharedPreferences sharedPreferences = getContext().getSharedPreferences("EducatroPrefs", Context.MODE_PRIVATE);
+            SharedPreferences.Editor editor = sharedPreferences.edit();
+            editor.clear();
+            editor.apply();
+        }
         
         // Navigate to sign in screen
         Intent intent = new Intent(getContext(), SignInActivity.class);
         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
         startActivity(intent);
-        getActivity().finish();
+        if (getActivity() != null) {
+            getActivity().finish();
+        }
     }
 
     private void showLoading() {
@@ -193,5 +228,10 @@ public class AccountFragment extends Fragment {
         loadingProgressBar.setVisibility(View.GONE);
         errorTextView.setVisibility(View.VISIBLE);
         errorTextView.setText(errorMessage);
+    }
+
+    private void navigateToCategory(String category) {
+        // Implement the logic to navigate to the category screen
+        Toast.makeText(getContext(), "Navigating to " + category + " category", Toast.LENGTH_SHORT).show();
     }
 } 

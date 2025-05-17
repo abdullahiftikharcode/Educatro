@@ -11,6 +11,28 @@
         android:layout_height="wrap_content"
         android:orientation="vertical">
 
+        <!-- Loading and Error Views -->
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <ProgressBar
+                android:id="@+id/loadingProgressBar"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:visibility="gone" />
+
+            <TextView
+                android:id="@+id/errorTextView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:padding="16dp"
+                android:textColor="@android:color/holo_red_dark"
+                android:visibility="gone" />
+        </FrameLayout>
+
         <!-- Header with Settings and More Options -->
         <RelativeLayout
             android:layout_width="match_parent"
@@ -196,66 +218,66 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:orientation="horizontal">
-                    
+
                     <Button
                         android:id="@+id/historyButton"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:layout_marginEnd="8dp"
+                        android:background="@drawable/bg_button_outline"
                         android:text="History"
                         android:textAllCaps="false"
-                        android:textColor="@color/primary"
-                        android:background="@drawable/bg_button_outline"
-                        android:layout_marginEnd="8dp"/>
-                    
+                        android:textColor="@color/gray_light" />
+
                     <Button
                         android:id="@+id/businessButton"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:layout_marginEnd="8dp"
+                        android:background="@drawable/bg_button_outline"
                         android:text="Business &amp; Management"
                         android:textAllCaps="false"
-                        android:textColor="@color/primary"
-                        android:background="@drawable/bg_button_outline"
-                        android:layout_marginEnd="8dp"/>
-                    
+                        android:textColor="@color/gray_light" />
+
                     <Button
                         android:id="@+id/lawButton"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:layout_marginEnd="8dp"
+                        android:background="@drawable/bg_button_outline"
                         android:text="Law"
                         android:textAllCaps="false"
-                        android:textColor="@color/primary"
-                        android:background="@drawable/bg_button_outline"
-                        android:layout_marginEnd="8dp"/>
-                    
+                        android:textColor="@color/gray_light" />
+
                     <Button
                         android:id="@+id/politicsButton"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:layout_marginEnd="8dp"
+                        android:background="@drawable/bg_button_outline"
                         android:text="Politics &amp; Society"
                         android:textAllCaps="false"
-                        android:textColor="@color/primary"
-                        android:background="@drawable/bg_button_outline"
-                        android:layout_marginEnd="8dp"/>
-                    
+                        android:textColor="@color/gray_light" />
+
                     <Button
                         android:id="@+id/literatureButton"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:layout_marginEnd="8dp"
+                        android:background="@drawable/bg_button_outline"
                         android:text="Literature"
                         android:textAllCaps="false"
-                        android:textColor="@color/primary"
-                        android:background="@drawable/bg_button_outline"
-                        android:layout_marginEnd="8dp"/>
-                    
+                        android:textColor="@color/gray_light" />
+
                     <Button
                         android:id="@+id/scienceButton"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:layout_marginEnd="8dp"
+                        android:background="@drawable/bg_button_outline"
                         android:text="Science"
                         android:textAllCaps="false"
-                        android:textColor="@color/primary"
-                        android:background="@drawable/bg_button_outline"
-                        android:layout_marginEnd="8dp"/>
+                        android:textColor="@color/gray_light" />
                 </LinearLayout>
             </HorizontalScrollView>
         </LinearLayout>
@@ -278,12 +300,15 @@
 
             <!-- Card 1 -->
             <LinearLayout
+                android:id="@+id/mainCardLayout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
                 android:gravity="center_vertical"
                 android:padding="8dp"
                 android:layout_marginBottom="8dp"
+                android:clickable="true"
+                android:focusable="true"
                 android:background="?attr/selectableItemBackground">
 
                 <ImageView
@@ -323,12 +348,15 @@
 
             <!-- Card 2 -->
             <LinearLayout
+                android:id="@+id/secondCardLayout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
                 android:gravity="center_vertical"
                 android:padding="8dp"
                 android:layout_marginBottom="8dp"
+                android:clickable="true"
+                android:focusable="true"
                 android:background="?attr/selectableItemBackground">
 
                 <ImageView

@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
@@ -33,6 +34,7 @@ public class DownloadsTabFragment extends Fragment {
     private ProgressBar loadingProgressBar;
     private TextView errorTextView;
     private TextView emptyTextView;
+    private Button exploreBrowseButton;
 
     private CourseAdapter courseAdapter;
     
@@ -84,16 +86,26 @@ public class DownloadsTabFragment extends Fragment {
         loadingProgressBar = view.findViewById(R.id.loadingProgressBar);
         errorTextView = view.findViewById(R.id.errorTextView);
         emptyTextView = view.findViewById(R.id.emptyTextView);
+        exploreBrowseButton = view.findViewById(R.id.exploreBrowseButton);
 
         // Set up RecyclerView
         setupRecyclerView();
+
+        // Set up browse button click listener
+        exploreBrowseButton.setOnClickListener(v -> {
+            // Navigate to Browse tab
+            if (getActivity() != null) {
+                // Set the bottom navigation to Browse tab (index 0)
+                ((com.example.educatro.MainActivity) getActivity()).navigateToTab(0);
+            }
+        });
 
         // Load downloaded courses
         loadDownloadedCourses();
     }
 
     private void setupRecyclerView() {
-        downloadsRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+        downloadsRecyclerView.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false));
         courseAdapter = new CourseAdapter(new ArrayList<>(), new CourseAdapter.OnCourseClickListener() {
             @Override
             public void onCourseClick(Course course) {
@@ -118,7 +130,7 @@ public class DownloadsTabFragment extends Fragment {
                 }
 
                 if (downloadedCourseIds.isEmpty()) {
-                    showEmpty();
+                    showEmptyWithDummyCourses();
                 } else {
                     loadCourseDetails();
                 }
@@ -158,6 +170,61 @@ public class DownloadsTabFragment extends Fragment {
         }
     }
 
+    private void showEmptyWithDummyCourses() {
+        // Create dummy courses for display
+        List<Course> dummyCourses = createDummyCourses();
+        
+        // Show empty state message and explore button
+        loadingProgressBar.setVisibility(View.GONE);
+        errorTextView.setVisibility(View.GONE);
+        emptyTextView.setVisibility(View.VISIBLE);
+        exploreBrowseButton.setVisibility(View.VISIBLE);
+        downloadsRecyclerView.setVisibility(View.VISIBLE);
+        
+        // Update adapter with dummy courses
+        updateAdapter(dummyCourses);
+    }
+    
+    private List<Course> createDummyCourses() {
+        List<Course> dummyCourses = new ArrayList<>();
+        
+        // Dummy Course 1 (Downloaded)
+        Course course1 = new Course();
+        course1.setCourseId("download_dummy1");
+        course1.setTitle("Mobile App Development with Flutter");
+        course1.setCategory("Development");
+        course1.setDescription("Build beautiful cross-platform mobile applications with Flutter.");
+        course1.setImageUrl("https://img-c.udemycdn.com/course/750x422/2381802_d90c_5.jpg");
+        course1.setAuthorName("Alex Rodriguez");
+        course1.setDuration(240); // 4 hours
+        course1.setLessonsCount(15);
+        course1.setRating(4.9f);
+        course1.setRatingsCount(320);
+        course1.setPrice(79.99);
+        course1.setDownloaded(true); // Mark as downloaded
+        
+        // Dummy Course 2 (Downloaded)
+        Course course2 = new Course();
+        course2.setCourseId("download_dummy2");
+        course2.setTitle("Machine Learning Fundamentals");
+        course2.setCategory("Data Science");
+        course2.setDescription("Learn the basics of machine learning with practical examples.");
+        course2.setImageUrl("https://img-c.udemycdn.com/course/750x422/950390_270f_3.jpg");
+        course2.setAuthorName("Jennifer Kim");
+        course2.setDuration(300); // 5 hours
+        course2.setLessonsCount(18);
+        course2.setRating(4.7f);
+        course2.setRatingsCount(270);
+        course2.setPrice(89.99);
+        course2.setDownloaded(true); // Mark as downloaded
+        
+        // Add dummy courses to the list
+        dummyCourses.add(course1);
+        dummyCourses.add(course2);
+        
+        return dummyCourses;
+    }
+
     private void updateAdapter(List<Course> courses) {
         courseAdapter.setCourses(courses);
         hideLoading();
@@ -174,6 +241,7 @@ public class DownloadsTabFragment extends Fragment {
         loadingProgressBar.setVisibility(View.VISIBLE);
         errorTextView.setVisibility(View.GONE);
         emptyTextView.setVisibility(View.GONE);
+        exploreBrowseButton.setVisibility(View.GONE);
         downloadsRecyclerView.setVisibility(View.GONE);
     }
 
@@ -187,13 +255,7 @@ public class DownloadsTabFragment extends Fragment {
         errorTextView.setVisibility(View.VISIBLE);
         errorTextView.setText(errorMessage);
         emptyTextView.setVisibility(View.GONE);
-        downloadsRecyclerView.setVisibility(View.GONE);
-    }
-
-    private void showEmpty() {
-        loadingProgressBar.setVisibility(View.GONE);
-        errorTextView.setVisibility(View.GONE);
-        emptyTextView.setVisibility(View.VISIBLE);
+        exploreBrowseButton.setVisibility(View.GONE);
         downloadsRecyclerView.setVisibility(View.GONE);
     }
 } 

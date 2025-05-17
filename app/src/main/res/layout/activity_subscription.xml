@@ -110,7 +110,7 @@
                 <ImageView
                     android:layout_width="24dp"
                     android:layout_height="24dp"
-                    android:src="@android:drawable/ic_menu_check"
+                    android:src="@drawable/ic_check"
                     android:tint="@color/primary"
                     android:contentDescription="@string/selected"/>
             </LinearLayout>

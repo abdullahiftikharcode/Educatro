@@ -69,4 +69,35 @@ public class MainActivity extends AppCompatActivity {
                     .commit();
         }
     }
+    
+    /**
+     * Navigate to a specific tab in the bottom navigation
+     * @param tabIndex the index of the tab to navigate to (0: Browse, 1: My Courses, 2: Bookmarks, 3: Notifications, 4: Account)
+     */
+    public void navigateToTab(int tabIndex) {
+        MenuItem item = null;
+        
+        switch (tabIndex) {
+            case 0:
+                item = bottomNavigationView.getMenu().findItem(R.id.nav_browse);
+                break;
+            case 1:
+                item = bottomNavigationView.getMenu().findItem(R.id.nav_my_courses);
+                break;
+            case 2:
+                item = bottomNavigationView.getMenu().findItem(R.id.nav_bookmarks);
+                break;
+            case 3:
+                item = bottomNavigationView.getMenu().findItem(R.id.nav_notifications);
+                break;
+            case 4:
+                item = bottomNavigationView.getMenu().findItem(R.id.nav_account);
+                break;
+        }
+        
+        if (item != null) {
+            item.setChecked(true);
+            bottomNavigationView.setSelectedItemId(item.getItemId());
+        }
+    }
 }
