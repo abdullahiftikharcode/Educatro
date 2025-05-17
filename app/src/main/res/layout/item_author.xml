@@ -56,7 +56,7 @@
             android:background="@drawable/bg_button_outline"
             android:text="@string/follow"
             android:textAllCaps="false"
-            android:textColor="@color/primary"
+            android:textColor="@color/gray_light"
             android:textSize="12sp" />
     </LinearLayout>
 </androidx.cardview.widget.CardView> 

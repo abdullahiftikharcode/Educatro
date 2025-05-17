@@ -122,6 +122,22 @@ public class User {
     public void setFavoriteCategories(List<String> favoriteCategories) {
         this.favoriteCategories = favoriteCategories;
     }
+    
+    // Custom setter to handle Firebase HashMap to List conversion
+    public void setFavoriteCategories(Map<String, Object> categoriesMap) {
+        if (categoriesMap == null) {
+            this.favoriteCategories = new ArrayList<>();
+            return;
+        }
+        
+        List<String> categories = new ArrayList<>();
+        for (Object value : categoriesMap.values()) {
+            if (value instanceof String) {
+                categories.add((String) value);
+            }
+        }
+        this.favoriteCategories = categories;
+    }
 
     public int getFollowersCount() {
         return followersCount;

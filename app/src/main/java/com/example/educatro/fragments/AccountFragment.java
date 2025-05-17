@@ -30,6 +30,9 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class AccountFragment extends Fragment {
 
     private ImageView profileImageView;
@@ -168,10 +171,57 @@ public class AccountFragment extends Fragment {
         usersRef.child(userId).addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                User user = dataSnapshot.getValue(User.class);
-                if (user != null) {
-                    displayUserData(user);
+                // Check if user exists
+                if (!dataSnapshot.exists()) {
+                    showError("User not found");
+                    return;
                 }
+                
+                try {
+                    User user = dataSnapshot.getValue(User.class);
+                    if (user != null) {
+                        displayUserData(user);
+                        
+                        // Check if user has favorite categories, if not, add some dummy categories
+                        if (user.getFavoriteCategories() == null || user.getFavoriteCategories().isEmpty()) {
+                            addDummyCategories();
+                        }
+                    }
+                } catch (Exception e) {
+                    // Handle the HashMap to List conversion issue
+                    // If we get here, it means there was an error deserializing the user object
+                    // We'll create a new User object with basic info and add dummy categories
+                    
+                    String name = dataSnapshot.child("name").getValue(String.class);
+                    String email = dataSnapshot.child("email").getValue(String.class);
+                    
+                    User user = new User();
+                    user.setUserId(userId);
+                    if (name != null) user.setName(name);
+                    if (email != null) user.setEmail(email);
+                    
+                    // Try to get other user data
+                    Long followersCount = dataSnapshot.child("followersCount").getValue(Long.class);
+                    Long followingCount = dataSnapshot.child("followingCount").getValue(Long.class);
+                    Long certificatesCount = dataSnapshot.child("certificatesCount").getValue(Long.class);
+                    Long finishedCoursesCount = dataSnapshot.child("finishedCoursesCount").getValue(Long.class);
+                    
+                    if (followersCount != null) user.setFollowersCount(followersCount.intValue());
+                    if (followingCount != null) user.setFollowingCount(followingCount.intValue());
+                    if (certificatesCount != null) user.setCertificatesCount(certificatesCount.intValue());
+                    if (finishedCoursesCount != null) user.setFinishedCoursesCount(finishedCoursesCount.intValue());
+                    
+                    displayUserData(user);
+                    
+                    // Check if there are any favorite categories
+                    if (!dataSnapshot.hasChild("favoriteCategories") || !dataSnapshot.child("favoriteCategories").hasChildren()) {
+                        addDummyCategories();
+                    } else {
+                        // There are categories but in HashMap format - we don't need to do anything
+                        // The UI will be updated based on the buttons' click listeners
+                    }
+                }
+                
                 hideLoading();
             }
 
@@ -180,6 +230,29 @@ public class AccountFragment extends Fragment {
                 showError("Error loading user data: " + databaseError.getMessage());
             }
         });
+    }
+    
+    private void addDummyCategories() {
+        List<String> dummyCategories = new ArrayList<>();
+        dummyCategories.add("History");
+        dummyCategories.add("Business & Management");
+        dummyCategories.add("Law");
+        dummyCategories.add("Politics & Society");
+        dummyCategories.add("Literature");
+        dummyCategories.add("Science");
+        
+        // First clear any existing categories then add new ones
+        usersRef.child(userId).child("favoriteCategories").removeValue().addOnCompleteListener(task -> {
+            if (task.isSuccessful()) {
+                // Now add the dummy categories as a list with indices
+                for (int i = 0; i < dummyCategories.size(); i++) {
+                    usersRef.child(userId).child("favoriteCategories").child(String.valueOf(i)).setValue(dummyCategories.get(i));
+                }
+            }
+        });
+        
+        // Update UI to reflect the dummy categories
+        updateCategoryButtonsUI("History"); // Default select the first category
     }
 
     private void displayUserData(User user) {
@@ -231,7 +304,53 @@ public class AccountFragment extends Fragment {
     }
 
     private void navigateToCategory(String category) {
-        // Implement the logic to navigate to the category screen
-        Toast.makeText(getContext(), "Navigating to " + category + " category", Toast.LENGTH_SHORT).show();
+        // Update buttons UI to show selected category
+        updateCategoryButtonsUI(category);
+        
+        // Show toast with the selected category
+        Toast.makeText(getContext(), "Selected category: " + category, Toast.LENGTH_SHORT).show();
+        
+        // In a full implementation, we would navigate to the category screen
+        // or filter courses by this category
+    }
+    
+    private void updateCategoryButtonsUI(String selectedCategory) {
+        // Reset all buttons to default style
+        Button historyButton = getView().findViewById(R.id.historyButton);
+        Button businessButton = getView().findViewById(R.id.businessButton);
+        Button lawButton = getView().findViewById(R.id.lawButton);
+        Button politicsButton = getView().findViewById(R.id.politicsButton);
+        Button literatureButton = getView().findViewById(R.id.literatureButton);
+        Button scienceButton = getView().findViewById(R.id.scienceButton);
+        
+        // Set all buttons to default color (gray)
+        historyButton.setTextColor(getResources().getColor(R.color.gray_light));
+        businessButton.setTextColor(getResources().getColor(R.color.gray_light));
+        lawButton.setTextColor(getResources().getColor(R.color.gray_light));
+        politicsButton.setTextColor(getResources().getColor(R.color.gray_light));
+        literatureButton.setTextColor(getResources().getColor(R.color.gray_light));
+        scienceButton.setTextColor(getResources().getColor(R.color.gray_light));
+        
+        // Set the selected button to primary color
+        switch (selectedCategory) {
+            case "History":
+                historyButton.setTextColor(getResources().getColor(R.color.primary));
+                break;
+            case "Business & Management":
+                businessButton.setTextColor(getResources().getColor(R.color.primary));
+                break;
+            case "Law":
+                lawButton.setTextColor(getResources().getColor(R.color.primary));
+                break;
+            case "Politics & Society":
+                politicsButton.setTextColor(getResources().getColor(R.color.primary));
+                break;
+            case "Literature":
+                literatureButton.setTextColor(getResources().getColor(R.color.primary));
+                break;
+            case "Science":
+                scienceButton.setTextColor(getResources().getColor(R.color.primary));
+                break;
+        }
     }
 } 

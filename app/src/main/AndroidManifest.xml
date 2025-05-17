@@ -45,6 +45,16 @@
             android:theme="@style/Theme.Educatro.NoActionBar" />
             
         <activity
+            android:name=".CourseDetailActivity"
+            android:exported="false"
+            android:theme="@style/Theme.Educatro.NoActionBar" />
+            
+        <activity
+            android:name=".SearchActivity"
+            android:exported="false"
+            android:theme="@style/Theme.Educatro.NoActionBar" />
+            
+        <activity
             android:name=".MainActivity"
             android:exported="false"
             android:theme="@style/Theme.Educatro.NoActionBar">

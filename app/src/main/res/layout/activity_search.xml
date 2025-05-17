@@ -73,6 +73,16 @@
             android:text="@string/authors"/>
     </com.google.android.material.tabs.TabLayout>
 
+    <LinearLayout
+        android:id="@+id/searchResultsContainer"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:orientation="vertical"
+        app:layout_constraintTop_toBottomOf="@id/tabLayout"
+        app:layout_constraintBottom_toBottomOf="parent">
+        <!-- RecyclerView will be added here programmatically -->
+    </LinearLayout>
+
     <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
         android:layout_height="0dp"
