@@ -53,11 +53,15 @@
     <string name="reviews">Reviews</string>
     <string name="related_courses">Related Courses</string>
     <string name="start_free_trial">Start a Free Trial</string>
+    <string name="continue_learning">Continue Learning</string>
     <string name="read_more">read more</string>
     <string name="contents">Contents</string>
     <string name="discussions">Discussions</string>
     <string name="follow">Follow</string>
     <string name="following">Following</string>
+    <string name="lesson_status">Lesson Status</string>
+    <string name="play">Play Lesson</string>
+    <string name="bookmark">Bookmark</string>
     
     <!-- Author Details -->
     <string name="followers">Followers</string>
@@ -91,6 +95,7 @@
     
     <!-- My Courses -->
     <string name="in_progress">In Progress</string>
+    <string name="completed">Completed</string>
     <string name="latest_courses">Latest Courses</string>
     
     <!-- Settings -->

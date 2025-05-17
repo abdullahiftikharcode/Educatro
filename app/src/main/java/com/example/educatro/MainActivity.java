@@ -7,6 +7,11 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 
+import com.example.educatro.fragments.AccountFragment;
+import com.example.educatro.fragments.BookmarksFragment;
+import com.example.educatro.fragments.BrowseFragment;
+import com.example.educatro.fragments.DownloadsFragment;
+import com.example.educatro.fragments.MyCoursesFragment;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.navigation.NavigationBarView;
 
@@ -36,16 +41,15 @@ public class MainActivity extends AppCompatActivity {
                 int itemId = item.getItemId();
 
                 if (itemId == R.id.nav_browse) {
-                    // For now, we'll use placeholder fragments
-                    selectedFragment = new PlaceholderFragment("Browse");
+                    selectedFragment = BrowseFragment.newInstance(userId);
                 } else if (itemId == R.id.nav_my_courses) {
-                    selectedFragment = new PlaceholderFragment("My Courses");
+                    selectedFragment = MyCoursesFragment.newInstance(userId);
                 } else if (itemId == R.id.nav_downloads) {
-                    selectedFragment = new PlaceholderFragment("Downloads");
+                    selectedFragment = DownloadsFragment.newInstance(userId);
                 } else if (itemId == R.id.nav_bookmarks) {
-                    selectedFragment = new PlaceholderFragment("Bookmarks");
+                    selectedFragment = BookmarksFragment.newInstance(userId);
                 } else if (itemId == R.id.nav_account) {
-                    selectedFragment = new PlaceholderFragment("Account");
+                    selectedFragment = AccountFragment.newInstance(userId);
                 }
 
                 if (selectedFragment != null) {
@@ -59,27 +63,10 @@ public class MainActivity extends AppCompatActivity {
         });
 
         // Set default fragment
-        getSupportFragmentManager().beginTransaction()
-                .replace(R.id.fragment_container, new PlaceholderFragment("Browse"))
-                .commit();
-    }
-
-    // Placeholder fragment for demonstration
-    public static class PlaceholderFragment extends Fragment {
-        private String title;
-
-        public PlaceholderFragment() {
-            // Required empty constructor
-        }
-
-        public PlaceholderFragment(String title) {
-            this.title = title;
-        }
-
-        @Override
-        public void onCreate(Bundle savedInstanceState) {
-            super.onCreate(savedInstanceState);
-            // We'll implement the actual fragments later
+        if (savedInstanceState == null) {
+            getSupportFragmentManager().beginTransaction()
+                    .replace(R.id.fragment_container, BrowseFragment.newInstance(userId))
+                    .commit();
         }
     }
 }
