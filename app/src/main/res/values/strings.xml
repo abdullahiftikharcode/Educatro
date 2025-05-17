@@ -57,10 +57,10 @@
     <string name="contents">Contents</string>
     <string name="discussions">Discussions</string>
     <string name="follow">Follow</string>
+    <string name="following">Following</string>
     
     <!-- Author Details -->
     <string name="followers">Followers</string>
-    <string name="following">Following</string>
     <string name="about">About</string>
     <string name="social_media">Social Media</string>
     <string name="featured">Featured</string>
@@ -113,4 +113,6 @@
     <string name="lessons">lessons</string>
     <string name="will_you_going_to_learn">Will you going to learn</string>
     <string name="all_categories">All Categories</string>
+    <string name="course_image">Course Image</string>
+    <string name="author_profile">Author Profile</string>
 </resources>

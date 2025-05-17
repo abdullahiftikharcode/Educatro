@@ -11,4 +11,5 @@
     <color name="gray_dark">#616161</color>
     <color name="error">#B00020</color>
     <color name="success">#4CAF50</color>
+    <color name="gold">#FFD700</color>
 </resources>
