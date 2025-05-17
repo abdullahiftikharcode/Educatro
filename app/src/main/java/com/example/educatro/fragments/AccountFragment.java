@@ -6,7 +6,9 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -29,15 +31,16 @@ import com.google.firebase.database.ValueEventListener;
 public class AccountFragment extends Fragment {
 
     private ImageView profileImageView;
+    private ImageButton editProfileImageButton;
+    private ImageButton settingsButton;
+    private ImageButton moreOptionsButton;
     private TextView nameTextView;
     private TextView emailTextView;
     private TextView followersCountTextView;
-    private TextView followingCountTextView;
     private TextView certificatesCountTextView;
     private TextView finishedCoursesCountTextView;
-    private Button editProfileButton;
-    private Button settingsButton;
-    private Button signOutButton;
+    private LinearLayout addNewCardLayout;
+    
     private ProgressBar loadingProgressBar;
     private TextView errorTextView;
 
@@ -85,17 +88,23 @@ public class AccountFragment extends Fragment {
 
         // Initialize views
         profileImageView = view.findViewById(R.id.profileImageView);
+        editProfileImageButton = view.findViewById(R.id.editProfileImageButton);
+        settingsButton = view.findViewById(R.id.settingsButton);
+        moreOptionsButton = view.findViewById(R.id.moreOptionsButton);
         nameTextView = view.findViewById(R.id.nameTextView);
         emailTextView = view.findViewById(R.id.emailTextView);
         followersCountTextView = view.findViewById(R.id.followersCountTextView);
-        followingCountTextView = view.findViewById(R.id.followingCountTextView);
         certificatesCountTextView = view.findViewById(R.id.certificatesCountTextView);
         finishedCoursesCountTextView = view.findViewById(R.id.finishedCoursesCountTextView);
-        editProfileButton = view.findViewById(R.id.editProfileButton);
-        settingsButton = view.findViewById(R.id.settingsButton);
-        signOutButton = view.findViewById(R.id.signOutButton);
-        loadingProgressBar = view.findViewById(R.id.loadingProgressBar);
-        errorTextView = view.findViewById(R.id.errorTextView);
+        addNewCardLayout = view.findViewById(R.id.addNewCardLayout);
+        
+        // Setup favorite categories buttons
+        Button historyButton = view.findViewById(R.id.historyButton);
+        Button businessButton = view.findViewById(R.id.businessButton);
+        Button lawButton = view.findViewById(R.id.lawButton);
+        Button politicsButton = view.findViewById(R.id.politicsButton);
+        Button literatureButton = view.findViewById(R.id.literatureButton);
+        Button scienceButton = view.findViewById(R.id.scienceButton);
 
         // Set up click listeners
         setupClickListeners();
@@ -105,27 +114,24 @@ public class AccountFragment extends Fragment {
     }
 
     private void setupClickListeners() {
-        editProfileButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                // In a real app, you would navigate to the edit profile screen
-                Toast.makeText(getContext(), "Edit Profile", Toast.LENGTH_SHORT).show();
-            }
+        editProfileImageButton.setOnClickListener(v -> {
+            // In a real app, you would launch image picker
+            Toast.makeText(getContext(), "Edit Profile Picture", Toast.LENGTH_SHORT).show();
         });
 
-        settingsButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                // In a real app, you would navigate to the settings screen
-                Toast.makeText(getContext(), "Settings", Toast.LENGTH_SHORT).show();
-            }
+        settingsButton.setOnClickListener(v -> {
+            // In a real app, you would navigate to the settings screen
+            Toast.makeText(getContext(), "Settings", Toast.LENGTH_SHORT).show();
         });
-
-        signOutButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                signOut();
-            }
+        
+        moreOptionsButton.setOnClickListener(v -> {
+            // In a real app, you would show a popup menu
+            Toast.makeText(getContext(), "More Options", Toast.LENGTH_SHORT).show();
+        });
+        
+        addNewCardLayout.setOnClickListener(v -> {
+            // In a real app, you would navigate to add payment method screen
+            Toast.makeText(getContext(), "Add New Payment Card", Toast.LENGTH_SHORT).show();
         });
     }
 
@@ -153,7 +159,6 @@ public class AccountFragment extends Fragment {
         nameTextView.setText(user.getName());
         emailTextView.setText(user.getEmail());
         followersCountTextView.setText(String.valueOf(user.getFollowersCount()));
-        followingCountTextView.setText(String.valueOf(user.getFollowingCount()));
         certificatesCountTextView.setText(String.valueOf(user.getCertificatesCount()));
         finishedCoursesCountTextView.setText(String.valueOf(user.getFinishedCoursesCount()));
 
